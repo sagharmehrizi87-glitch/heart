@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>I Love You</title>
+
+<style>
+
+body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#heart {
+    position: relative;
+
+    width: 600px;
+    height: 600px;
+
+    animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+
+/* نوشته ها */
+
+.text {
+    position: absolute;
+
+    color: #ffb6c1;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    transform: translate(-50%, -50%);
+
+    transition:
+        left 1.5s ease,
+        top 1.5s ease,
+        opacity 1.5s ease;
+}
+
+
+/* حرکت اولیه نوشته ها */
+
+.text.start {
+    opacity: 0;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.2);
+}
+
+
+/* ظاهر شدن نوشته ها */
+
+.text.show {
+    opacity: 1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+}
+
+
+/* تپش قلب */
+
+@keyframes heartbeat {
+
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.07);
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div id="heart"></div>
+
+
+<script>
+
+const heart = document.getElementById("heart");
+
+
+// تعداد نوشته ها
+const amount = 400;
+
+
+// ساخت نوشته ها
+for (let i = 0; i < amount; i++) {
+
+    const text = document.createElement("span");
+
+    text.className = "text start";
+
+    text.innerText = "I love you";
+
+    heart.appendChild(text);
+
+
+    // نقطه تصادفی اولیه
+    const randomX = Math.random() * 600;
+
+    const randomY = Math.random() * 600;
+
+    text.style.left = randomX + "px";
+
+    text.style.top = randomY + "px";
+
+
+    // محاسبه جای نوشته روی قلب
+    const angle =
+        (i / amount) * Math.PI * 2;
+
+
+    // فرمول قلب
+    const x =
+        16 * Math.pow(Math.sin(angle), 3);
+
+
+    const y =
+        13 * Math.cos(angle)
+        - 5 * Math.cos(2 * angle)
+        - 2 * Math.cos(3 * angle)
+        - Math.cos(4 * angle);
+
+
+    // اندازه قلب
+    const scale = 16;
+
+
+    const heartX =
+        300 + x * scale;
+
+
+    const heartY =
+        300 - y * scale;
+
+
+    // کمی پراکندگی برای ضخیم شدن قلب
+    const spread = 35;
+
+    const finalX =
+        heartX + (Math.random() - 0.5) * spread;
+
+    const finalY =
+        heartY + (Math.random() - 0.5) * spread;
+
+
+    // کمی تأخیر برای هر نوشته
+    setTimeout(() => {
+
+        text.style.left = finalX + "px";
+
+        text.style.top = finalY + "px";
+
+        text.classList.remove("start");
+
+        text.classList.add("show");
+
+    }, i * 3);
+
+}
+
+</script>
+
+</body>
+</html>
